@@ -23,9 +23,9 @@ ay = np.array(tab['y'])
 erry = np.array(np.sqrt(ay))
 
 def lognorm(x, A, s, m):
-    return A*np.exp(-((np.log(x)-m)**2/(2*s**2)))
+    return A*np.exp(-0.5*((np.log(x)-m)/s)**2)
 
-pstart = np.array([120, 150, 100])
+pstart = np.array([100, 2, 5])
 
 params, params_covariance = opt.curve_fit(lognorm, ax, ay, p0=[pstart])
 err_params = np.sqrt(params_covariance.diagonal())
