@@ -1,4 +1,4 @@
-''Scrivere uno script python che:
+'''Scrivere uno script python che:
 - Risolva l'equazione differenziale per Vout dato Vin.
 -Definisca Vin per il tempo 0<=t<=10 tale che:
 Vin(t) è +1 per t pari e -1 per t dispari
@@ -24,11 +24,11 @@ def ddpi(t):
         return -1
 
 #funzione per l'equazione differenziale
-def fddpo(vout, t, ff, RC):
+def fddpo(vout, t, fun, RC):
     '''
     funzine fddp(vout)= 1/RC(vin - vout) -> inizialmente R=C=1
     '''
-    return (ff(t) - vout)/RC
+    return (fun(t) - vout)/RC
 
 #intervallo [a,b] e punto di partenza Vout(0)=0
 a = 0.
@@ -47,6 +47,8 @@ for i in range(len(tt)):
 #grafico Vin in funzione del tempo
 plt.plot(tt, Vin, color='turquoise')
 plt.title('Vin in funzione del tempo', color='teal', fontsize=14)
+plt.xlabel('t')
+plt.ylabel('Vin')
 plt.show()
 
 #calcolo soluzioni tramite scipy.integrate.odeint
@@ -57,7 +59,7 @@ vv1 = integrate.odeint(fddpo, v0, tt, args=(ddpi, 1))
 vv2 = integrate.odeint(fddpo, v0, tt, args=(ddpi, 0.1))
 vv3 = integrate.odeint(fddpo, v0, tt, args=(ddpi, 0.01))
 
-
+'''
 
 #grafico soluzioni RC=1
 plt.title('Vout con RC=1 ', color='indigo', fontsize=14)
@@ -79,11 +81,25 @@ plt.plot(tt, vv3, color='paleturquoise' )
 plt.xlabel('t')
 plt.ylabel('Vout')
 plt.show() 
+'''
 
 #grafico in cui li raggruppo tutti
+plt.title('Vout in funzione di t per diversi valori di RC', fontsize=14)
 plt.plot(tt, vv1, color='mediumpurple', label='RC=1')
 plt.plot(tt, vv2, color='seagreen', label='RC=0.1')
 plt.plot(tt, vv3, color='paleturquoise', label='RC=0.01')
 plt.xlabel('t')
 plt.ylabel('Vout')
 plt.show()
+
+#salvare in un file csv
+dati = pd.DataFrame(columns=['tempo', 'Vin', 'Vout1', 'Vout2', 'Vout3'])
+dati['tempo'] = tt
+dati['Vin'] = Vin
+dati['Vout1'] = vv1
+dati['Vout2'] = vv2
+dati['Vout3'] = vv3
+
+print(dati)
+
+dati.to_csv('dati_filtro.csv', index=False)
