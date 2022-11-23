@@ -128,12 +128,13 @@ plt.legend()
 plt.show()
 '''
 #grafico spettri e fit
-plt.plot(freq1[1:trasf1.size//2], y1, color='grey', label='fit white noise')
-plt.plot(freq2[1:trasf2.size//2], y2, color='magenta', label='fit pink noise')
-plt.plot(freq3[1:trasf3.size//2], y3, color='red', label='fit red noise')
 plt.plot(freq1[:trasf1.size//2], np.absolute(trasf1[:trasf1.size//2])**2, 'o', markersize=4, color='lightgrey')
 plt.plot(freq2[:trasf2.size//2], np.absolute(trasf2[:trasf2.size//2])**2, 'o', markersize=4, color='pink')
 plt.plot(freq3[:trasf3.size//2], np.absolute(trasf3[:trasf3.size//2])**2, 'o', markersize=4, color='tomato')
+plt.plot(freq1[1:trasf1.size//2], y1, color='grey', label='fit white noise')
+plt.plot(freq2[1:trasf2.size//2], y2, color='magenta', label='fit pink noise')
+plt.plot(freq3[1:trasf3.size//2], y3, color='red', label='fit red noise')
+
 
 plt.xscale('log')
 plt.yscale('log')
