@@ -1,18 +1,4 @@
-'''
-Creare il file reco.py che:
--Definisca la classe Hit
---Un oggetto di tipo Hit deve contenere informazioni su:
----Id Modulo
----Id Sensore
----Time Stamp rivelazione
--Definisca la classe Event
---Un oggetto di tipo Event deve contenere informazioni su:
----Numero di Hit
----Time Stamp del primo Hit
----Time Stamp dell'ultimo Hit
----Durata temporale
----Array di tutti gli Hit
-'''
+import numpy as np
 
 class Hit:
     def __init__(self, mod, sens, time):
@@ -40,3 +26,5 @@ class Event:
             self.timefirst = hit.time
         self.timelast = hit.time
         self.durata = self.timelast - self.timefirst
+    def __str__(self):
+        return 'Evento con ' + str(self.numero) + ' hit rilevati \n tempo del primo hit ' + str(self.timefirst) + "\n tempo dell'ultimo hit " + str(self.timelast) + "\n durata dell'evento " + str(self.durata)
