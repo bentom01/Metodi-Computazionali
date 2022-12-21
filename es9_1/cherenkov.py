@@ -1,18 +1,3 @@
-'''
-Passo 3:
-
-Creare uno script python che svolga le seguenti operazioni:
--Importi il modulo reco
--Legga i file di dati e per ognuno di essi produca un array di reco.Hit
---SUGGERIMENTO: creare un funzione da richiamare per ogni file
--Produca una un array che corrisponda al conbinazione, 
-ordinata temporalmente, di tutti i reco.Hit
--Produca un istogramma dei (delta_t) fra reco.Hit consecutivi
---Come stabilire la finestra temporale da applicare ai delta_t
-che permetta di raggruppare gli Hit dello stesso evento 
-ma separi quelii apparteneti ad eventi differenti?
-'''
-
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -31,11 +16,10 @@ def arr_hit(tab):
     return arr
 
 def arr_event(arrhit, treshold):
-    event = np.empty([])
-    conta = 0
-    deltatimes = np.diff(arrhit)
+    event = np.empty(0)
+    event = np.append(event, reco.Event())
     for i in range(len(arrhit)-1):
-        if harrhit[i+1]-arrhit[i] > treshold:
+        if arrhit[i+1].time-arrhit[i].time > treshold:
             event = np.append(event, reco.Event())
         event[-1].aggiungi(arrhit[i])
     return event
@@ -53,13 +37,14 @@ hit3 = arr_hit(m3)
 
 #produco un array ordinato temporalmente di tutti gli array
 hit = np.concatenate((hit0, hit1, hit2, hit3))
-
+'''
 for i in range(len(hit)-1):
     if hit[i] > hit[i+1]:
         a = hit[i]
         hit[i] = hit[i+1]
         hit[i+1] = a
-
+'''
+hit.sort(kind='mergesort')
 '''
 for i in range(len(hit)):
     print(hit[i].time)
@@ -78,19 +63,34 @@ plt.show()
 
 '''
 Passo 4:
-
-Modificare lo script del Passo 3 aggiungendo funzionalità in modo che:
-1) Crei un array di oggeti di tipo reco.Event a partire dall'array 
-ordinato di reco.Hit applicando a una finestra temporale ai deltat 
-tra reco.Hit consecutivi
-SUGGERIMENTO: creare un funzione apposita
-2) Stampi informazioni dettagliate per i primi 10 reco.Event
-SUGGERIMENTO: verificare che le informazioni stampate 
-non contengano indizi di errore
-3) Produca l'istogramma del numero di reco.Hit per reco.Event
-4) Produca l'istogramma della durata dei reco.Event
 5) Produca l'istogramma delle differenze di tempo fra reco.Event consecutivi
 6)Produca il grafico 2D del numero di hit nell'evento in funzione della durata
 * SUGGERIMENTO: usare `plt.scatter`
 '''
-   
+timewindow = 10**2.3
+
+ev = arr_event(hit, timewindow)
+#stampo le informazioni dei primi 10 eventi
+for i in range(11):
+    print(ev[i])
+
+print(len(ev))
+    
+nhits = np.empty(0)
+deltahits = np.empty(0)
+for e in ev:
+    nhits = np.append(nhits, e.numero)
+    deltahits = np.append(deltahits, e.durata)
+    
+#istogramma del numero di reco.Hit per reco.Event    
+plt.hist(nhits, bins=20, alpha=0.8, color='yellowgreen', ec='olivedrab')
+plt.yscale('log')
+plt.show()
+
+#istogramma della durata degli eventi
+plt.hist(deltahits, bins=70, alpha=0.8, color='lightpink', ec='palevioletred')
+plt.yscale('log')
+plt.show()
+
+#istogramma della differenza dei tempi tra reco.Event consecutivi
+
